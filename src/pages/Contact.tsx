@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,19 +19,23 @@ const Contact = () => {
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       toast({ title: "Please fill all required fields", variant: "destructive" });
       return;
     }
     setLoading(true);
-    // Simulated submission - replace with backend when Cloud is enabled
-    setTimeout(() => {
+    const { error } = await supabase.from("contact_submissions").insert({
+      name: form.name, phone: form.phone || null, email: form.email, message: form.message,
+    });
+    if (error) {
+      toast({ title: "Error sending message", description: error.message, variant: "destructive" });
+    } else {
       toast({ title: "Message sent!", description: "We'll get back to you soon." });
       setForm({ name: "", phone: "", email: "", message: "" });
-      setLoading(false);
-    }, 1000);
+    }
+    setLoading(false);
   };
 
   return (
