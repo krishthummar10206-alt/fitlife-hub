@@ -1,13 +1,18 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
-import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 import { LogIn } from "lucide-react";
+import { toast } from "sonner";
 
 const AdminLogin = () => {
   const { user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!loading && user && isAdmin) {
@@ -15,11 +20,14 @@ const AdminLogin = () => {
     }
   }, [user, isAdmin, loading, navigate]);
 
-  const handleGoogleLogin = async () => {
-    const { error } = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (error) console.error("Login error:", error);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      toast.error(error.message);
+    }
+    setSubmitting(false);
   };
 
   if (loading) {
@@ -44,13 +52,19 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="glass rounded-2xl p-10 max-w-md w-full mx-4 text-center space-y-6">
-        <h1 className="font-heading text-4xl text-foreground">Admin <span className="text-primary">Panel</span></h1>
-        <p className="text-muted-foreground">Sign in with Google to access the dashboard</p>
-        <Button onClick={handleGoogleLogin} className="w-full font-heading tracking-wider" size="lg">
-          <LogIn className="mr-2 h-5 w-5" /> SIGN IN WITH GOOGLE
+      <form onSubmit={handleLogin} className="glass rounded-2xl p-10 max-w-md w-full mx-4 space-y-6">
+        <div className="text-center">
+          <h1 className="font-heading text-4xl text-foreground">Admin <span className="text-primary">Panel</span></h1>
+          <p className="text-muted-foreground mt-2">Sign in to access the dashboard</p>
+        </div>
+        <div className="space-y-4">
+          <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+          <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+        </div>
+        <Button type="submit" className="w-full font-heading tracking-wider" size="lg" disabled={submitting}>
+          <LogIn className="mr-2 h-5 w-5" /> {submitting ? "SIGNING IN..." : "SIGN IN"}
         </Button>
-      </div>
+      </form>
     </div>
   );
 };
