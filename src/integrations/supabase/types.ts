@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -113,6 +143,93 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          is_approved: boolean
+          message: string
+          name: string
+          rating: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          message: string
+          name: string
+          rating?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          message?: string
+          name?: string
+          rating?: number
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          icon_name: string
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      statistics: {
+        Row: {
+          created_at: string
+          display_order: number
+          icon_name: string
+          id: string
+          is_active: boolean
+          title: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          is_active?: boolean
+          title: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          icon_name?: string
+          id?: string
+          is_active?: boolean
+          title?: string
+          value?: string
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           created_at: string
@@ -191,6 +308,39 @@ export type Database = {
           social_twitter?: string | null
           specialization?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      transformations: {
+        Row: {
+          after_image_url: string
+          before_image_url: string
+          client_name: string | null
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          is_active: boolean
+        }
+        Insert: {
+          after_image_url: string
+          before_image_url: string
+          client_name?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
+        }
+        Update: {
+          after_image_url?: string
+          before_image_url?: string
+          client_name?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          is_active?: boolean
         }
         Relationships: []
       }
