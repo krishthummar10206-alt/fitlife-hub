@@ -73,7 +73,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex-1 flex flex-col">
         <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-card">
           <h1 className="font-heading text-xl text-foreground">Iron<span className="text-primary">Fit</span></h1>
-          <ScrollArea className="max-w-[60vw]" orientation="horizontal">
+          <ScrollArea className="max-w-[60vw]">
             <div className="flex gap-2">
               {navItems.map((item) => (
                 <Link key={item.to} to={item.to}
