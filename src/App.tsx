@@ -13,6 +13,8 @@ import Trainers from "./pages/Trainers";
 import Gallery from "./pages/Gallery";
 import Plans from "./pages/Plans";
 import Contact from "./pages/Contact";
+import Blog from "./pages/Blog";
+import Transformations from "./pages/Transformations";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/admin/Dashboard";
@@ -21,6 +23,12 @@ import AdminPlans from "./pages/admin/AdminPlans";
 import AdminGallery from "./pages/admin/AdminGallery";
 import AdminTestimonials from "./pages/admin/AdminTestimonials";
 import AdminInquiries from "./pages/admin/AdminInquiries";
+import AdminServices from "./pages/admin/AdminServices";
+import AdminStatistics from "./pages/admin/AdminStatistics";
+import AdminBlog from "./pages/admin/AdminBlog";
+import AdminTransformations from "./pages/admin/AdminTransformations";
+import AdminReviews from "./pages/admin/AdminReviews";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +40,6 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            {/* Public routes */}
             <Route path="/" element={<Layout><Index /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/services" element={<Layout><Services /></Layout>} />
@@ -40,8 +47,9 @@ const App = () => (
             <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
             <Route path="/plans" element={<Layout><Plans /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
+            <Route path="/blog" element={<Layout><Blog /></Layout>} />
+            <Route path="/transformations" element={<Layout><Transformations /></Layout>} />
 
-            {/* Admin routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
             <Route path="/admin/trainers" element={<AdminLayout><AdminTrainers /></AdminLayout>} />
@@ -49,6 +57,12 @@ const App = () => (
             <Route path="/admin/gallery" element={<AdminLayout><AdminGallery /></AdminLayout>} />
             <Route path="/admin/testimonials" element={<AdminLayout><AdminTestimonials /></AdminLayout>} />
             <Route path="/admin/inquiries" element={<AdminLayout><AdminInquiries /></AdminLayout>} />
+            <Route path="/admin/services" element={<AdminLayout><AdminServices /></AdminLayout>} />
+            <Route path="/admin/statistics" element={<AdminLayout><AdminStatistics /></AdminLayout>} />
+            <Route path="/admin/blog" element={<AdminLayout><AdminBlog /></AdminLayout>} />
+            <Route path="/admin/transformations" element={<AdminLayout><AdminTransformations /></AdminLayout>} />
+            <Route path="/admin/reviews" element={<AdminLayout><AdminReviews /></AdminLayout>} />
+            <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
 
             <Route path="*" element={<Layout><NotFound /></Layout>} />
           </Routes>

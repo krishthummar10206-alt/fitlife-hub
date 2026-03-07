@@ -5,13 +5,10 @@ const Footer = () => (
   <footer className="bg-card border-t border-border/30">
     <div className="container mx-auto px-4 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-        {/* Brand */}
         <div>
           <Link to="/" className="flex items-center gap-2 mb-4">
             <Dumbbell className="h-7 w-7 text-primary" />
-            <span className="font-heading text-2xl font-bold tracking-wider">
-              IRON<span className="text-primary">FIT</span>
-            </span>
+            <span className="font-heading text-2xl font-bold tracking-wider">IRON<span className="text-primary">FIT</span></span>
           </Link>
           <p className="text-muted-foreground text-sm leading-relaxed">
             Transform your body and mind at the best fitness center in the city. Join our community of fitness enthusiasts today.
@@ -25,17 +22,15 @@ const Footer = () => (
           </div>
         </div>
 
-        {/* Quick Links */}
         <div>
           <h4 className="font-heading text-lg mb-4 text-foreground">Quick Links</h4>
-          {["About", "Services", "Trainers", "Gallery", "Plans", "Contact"].map((l) => (
+          {["About", "Services", "Trainers", "Gallery", "Plans", "Blog", "Transformations", "Contact"].map((l) => (
             <Link key={l} to={`/${l.toLowerCase()}`} className="block text-sm text-muted-foreground hover:text-primary transition-colors py-1.5">
               {l}
             </Link>
           ))}
         </div>
 
-        {/* Services */}
         <div>
           <h4 className="font-heading text-lg mb-4 text-foreground">Services</h4>
           {["Weight Training", "Cardio Programs", "Personal Training", "Group Classes", "Diet Consultation", "CrossFit"].map((s) => (
@@ -43,7 +38,6 @@ const Footer = () => (
           ))}
         </div>
 
-        {/* Contact */}
         <div>
           <h4 className="font-heading text-lg mb-4 text-foreground">Contact Us</h4>
           <div className="space-y-3">
@@ -51,10 +45,10 @@ const Footer = () => (
               <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
               <span>123 Fitness Street, Downtown, Your City - 100001</span>
             </div>
-            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <a href="tel:+918238280606" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors">
               <Phone className="h-4 w-4 text-primary shrink-0" />
-              <span>+91 98765 43210</span>
-            </div>
+              <span>+91 8238 280 606</span>
+            </a>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <Mail className="h-4 w-4 text-primary shrink-0" />
               <span>info@ironfit.com</span>

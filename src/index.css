@@ -6,50 +6,49 @@
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 5%;
+    --foreground: 0 0% 96%;
 
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 142 71% 45%;
-    --primary-foreground: 0 0% 2%;
+    --primary: 0 85% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 14%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 142 71% 45%;
-    --accent-foreground: 0 0% 2%;
+    --accent: 0 85% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 142 71% 45%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 85% 50%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 142 71% 45%;
-    --sidebar-primary-foreground: 0 0% 2%;
-    --sidebar-accent: 0 0% 14%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 142 71% 45%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 0 85% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 85% 50%;
 
-    /* Custom tokens */
-    --neon: 142 71% 45%;
-    --neon-glow: 0 0 20px hsl(142 71% 45% / 0.4);
-    --surface: 0 0% 12%;
-    --surface-hover: 0 0% 16%;
+    --neon: 0 85% 50%;
+    --neon-glow: 0 0 20px hsl(0 85% 50% / 0.4);
+    --surface: 0 0% 10%;
+    --surface-hover: 0 0% 14%;
 
     font-family: 'Inter', sans-serif;
   }
@@ -72,11 +71,11 @@
 
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 20px hsl(142 71% 45% / 0.5), 0 0 40px hsl(142 71% 45% / 0.2);
+    text-shadow: 0 0 20px hsl(0 85% 50% / 0.5), 0 0 40px hsl(0 85% 50% / 0.2);
   }
 
   .neon-border {
-    box-shadow: 0 0 15px hsl(142 71% 45% / 0.3), inset 0 0 15px hsl(142 71% 45% / 0.1);
+    box-shadow: 0 0 15px hsl(0 85% 50% / 0.3), inset 0 0 15px hsl(0 85% 50% / 0.1);
   }
 
   .glass {
@@ -88,22 +87,20 @@
   }
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(0 0% 7%);
+  background: hsl(0 0% 5%);
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(0 0% 25%);
+  background: hsl(0 0% 22%);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(142 71% 45%);
+  background: hsl(0 85% 50%);
 }
