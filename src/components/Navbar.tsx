@@ -10,7 +10,9 @@ const links = [
   { to: "/services", label: "Services" },
   { to: "/trainers", label: "Trainers" },
   { to: "/gallery", label: "Gallery" },
+  { to: "/transformations", label: "Transformations" },
   { to: "/plans", label: "Plans" },
+  { to: "/blog", label: "Blog" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -28,61 +30,41 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-1">
           {links.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
+            <Link key={l.to} to={l.to}
               className={`px-3 py-2 text-sm font-medium transition-colors rounded-md ${
-                location.pathname === l.to
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
+                location.pathname === l.to ? "text-primary" : "text-muted-foreground hover:text-foreground"
+              }`}>
               {l.label}
             </Link>
           ))}
-          <Link to="/plans">
-            <Button size="sm" className="ml-3 font-heading tracking-wider">
-              JOIN NOW
-            </Button>
-          </Link>
+          <a href="tel:+918238280606">
+            <Button size="sm" className="ml-3 font-heading tracking-wider">CALL NOW</Button>
+          </a>
         </div>
 
-        {/* Mobile toggle */}
-        <button className="md:hidden text-foreground" onClick={() => setOpen(!open)}>
+        <button className="lg:hidden text-foreground" onClick={() => setOpen(!open)}>
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass border-t border-border/30 overflow-hidden"
-          >
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden glass border-t border-border/30 overflow-hidden">
             <div className="flex flex-col p-4 gap-2">
               {links.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  onClick={() => setOpen(false)}
+                <Link key={l.to} to={l.to} onClick={() => setOpen(false)}
                   className={`px-3 py-2 text-sm font-medium rounded-md ${
-                    location.pathname === l.to
-                      ? "text-primary bg-secondary"
-                      : "text-muted-foreground"
-                  }`}
-                >
+                    location.pathname === l.to ? "text-primary bg-secondary" : "text-muted-foreground"
+                  }`}>
                   {l.label}
                 </Link>
               ))}
-              <Link to="/plans" onClick={() => setOpen(false)}>
-                <Button className="w-full mt-2 font-heading tracking-wider">JOIN NOW</Button>
-              </Link>
+              <a href="tel:+918238280606" onClick={() => setOpen(false)}>
+                <Button className="w-full mt-2 font-heading tracking-wider">CALL NOW</Button>
+              </a>
             </div>
           </motion.div>
         )}

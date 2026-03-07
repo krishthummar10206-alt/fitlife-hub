@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { LogIn } from "lucide-react";
+import { LogIn, Dumbbell } from "lucide-react";
 import { toast } from "sonner";
+
+const ADMIN_EMAIL = "admin@ironfit.local";
 
 const AdminLogin = () => {
   const { user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -23,9 +24,12 @@ const AdminLogin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: ADMIN_EMAIL,
+      password,
+    });
     if (error) {
-      toast.error(error.message);
+      toast.error("Invalid password");
     }
     setSubmitting(false);
   };
@@ -33,7 +37,7 @@ const AdminLogin = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+        <div className="animate-pulse text-primary font-heading text-xl">Loading...</div>
       </div>
     );
   }
@@ -54,12 +58,23 @@ const AdminLogin = () => {
     <div className="min-h-screen bg-background flex items-center justify-center">
       <form onSubmit={handleLogin} className="glass rounded-2xl p-10 max-w-md w-full mx-4 space-y-6">
         <div className="text-center">
+          <div className="flex justify-center mb-4">
+            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+              <Dumbbell className="h-8 w-8 text-primary" />
+            </div>
+          </div>
           <h1 className="font-heading text-4xl text-foreground">Admin <span className="text-primary">Panel</span></h1>
-          <p className="text-muted-foreground mt-2">Sign in to access the dashboard</p>
+          <p className="text-muted-foreground mt-2">Enter password to access dashboard</p>
         </div>
-        <div className="space-y-4">
-          <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-          <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+        <div>
+          <Input
+            type="password"
+            placeholder="Enter Admin Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="text-center text-lg py-6"
+          />
         </div>
         <Button type="submit" className="w-full font-heading tracking-wider" size="lg" disabled={submitting}>
           <LogIn className="mr-2 h-5 w-5" /> {submitting ? "SIGNING IN..." : "SIGN IN"}
