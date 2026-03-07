@@ -1,22 +1,25 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
-import { Plus, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2, Upload } from "lucide-react";
+import { uploadImage } from "@/lib/upload";
 import type { Tables } from "@/integrations/supabase/types";
 
 type GalleryItem = Tables<"gallery">;
-const categories = ["interior", "equipment", "workouts", "classes", "events", "transformations", "general"];
+const categories = ["interior", "equipment", "workouts", "classes", "events", "general"];
 
 const AdminGallery = () => {
-  const { toast } = useToast();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<GalleryItem | null>(null);
   const [form, setForm] = useState({ title: "", image_url: "", category: "general", display_order: 0 });
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const { data: items = [] } = useQuery({
     queryKey: ["admin-gallery"],
@@ -29,16 +32,21 @@ const AdminGallery = () => {
 
   const save = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("gallery").insert(form);
-      if (error) throw error;
+      if (editing) {
+        const { error } = await supabase.from("gallery").update(form).eq("id", editing.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("gallery").insert(form);
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-gallery"] });
-      toast({ title: "Photo added" });
-      setOpen(false);
+      toast.success(editing ? "Updated" : "Added");
+      setOpen(false); setEditing(null);
       setForm({ title: "", image_url: "", category: "general", display_order: 0 });
     },
-    onError: (e) => toast({ title: "Error", description: e.message, variant: "destructive" }),
+    onError: (e) => toast.error(e.message),
   });
 
   const remove = useMutation({
@@ -46,8 +54,28 @@ const AdminGallery = () => {
       const { error } = await supabase.from("gallery").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-gallery"] }); toast({ title: "Photo deleted" }); },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-gallery"] }); toast.success("Deleted"); },
   });
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const url = await uploadImage(file, "gallery");
+      setForm((f) => ({ ...f, image_url: url }));
+      toast.success("Image uploaded");
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+    setUploading(false);
+  };
+
+  const openEdit = (item: GalleryItem) => {
+    setEditing(item);
+    setForm({ title: item.title, image_url: item.image_url, category: item.category, display_order: item.display_order });
+    setOpen(true);
+  };
 
   return (
     <div>
@@ -55,13 +83,21 @@ const AdminGallery = () => {
         <h1 className="font-heading text-3xl text-foreground">Gallery</h1>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button><Plus className="h-4 w-4 mr-2" /> Add Photo</Button>
+            <Button onClick={() => { setEditing(null); setForm({ title: "", image_url: "", category: "general", display_order: 0 }); setOpen(true); }}>
+              <Plus className="h-4 w-4 mr-2" /> Add Photo
+            </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>Add Photo</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{editing ? "Edit" : "Add"} Photo</DialogTitle></DialogHeader>
             <div className="space-y-3">
               <Input placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-              <Input placeholder="Image URL *" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+              <div>
+                <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+                <Button type="button" variant="outline" onClick={() => fileRef.current?.click()} disabled={uploading} className="w-full">
+                  <Upload className="h-4 w-4 mr-2" /> {uploading ? "Uploading..." : "Upload Image"}
+                </Button>
+                {form.image_url && <img src={form.image_url} alt="Preview" className="mt-2 rounded-lg max-h-32 object-cover w-full" />}
+              </div>
               <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -84,9 +120,14 @@ const AdminGallery = () => {
             <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
               <p className="text-sm font-heading text-foreground">{item.title}</p>
               <p className="text-xs text-primary">{item.category}</p>
-              <Button variant="destructive" size="sm" onClick={() => remove.mutate(item.id)}>
-                <Trash2 className="h-3 w-3 mr-1" /> Delete
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => openEdit(item)}>
+                  <Pencil className="h-3 w-3 mr-1" /> Edit
+                </Button>
+                <Button variant="destructive" size="sm" onClick={() => remove.mutate(item.id)}>
+                  <Trash2 className="h-3 w-3 mr-1" /> Delete
+                </Button>
+              </div>
             </div>
           </div>
         ))}
