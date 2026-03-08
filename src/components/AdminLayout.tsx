@@ -35,6 +35,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, isAdmin, loading, navigate]);
 
+  if (loading) return null;
   if (!user || !isAdmin) return null;
 
   return (
