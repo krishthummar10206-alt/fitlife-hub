@@ -35,10 +35,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, isAdmin, loading, navigate]);
 
-  if (loading) {
-    return <div className="min-h-screen bg-background flex items-center justify-center"><div className="animate-pulse text-primary font-heading text-xl">Loading...</div></div>;
-  }
-
   if (!user || !isAdmin) return null;
 
   return (
