@@ -1,54 +1,50 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Users, CreditCard, Image, MessageSquare, Star, Wrench, BarChart3, FileText, ArrowLeftRight, ThumbsUp } from "lucide-react";
 
 const Dashboard = () => {
-  const { data: stats } = useQuery({
+  const { data: stats, isLoading } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
-      const [trainers, plans, gallery, testimonials, inquiries, unread, services, statistics, blogPosts, transformations, reviews, pendingReviews] = await Promise.all([
-        supabase.from("trainers").select("id", { count: "exact", head: true }),
-        supabase.from("plans").select("id", { count: "exact", head: true }),
-        supabase.from("gallery").select("id", { count: "exact", head: true }),
-        supabase.from("testimonials").select("id", { count: "exact", head: true }),
-        supabase.from("contact_submissions").select("id", { count: "exact", head: true }),
+      // Single optimized batch of parallel count queries
+      const tables = [
+        { key: "services", table: "services" as const },
+        { key: "trainers", table: "trainers" as const },
+        { key: "plans", table: "plans" as const },
+        { key: "gallery", table: "gallery" as const },
+        { key: "testimonials", table: "testimonials" as const },
+        { key: "blogPosts", table: "blog_posts" as const },
+        { key: "transformations", table: "transformations" as const },
+        { key: "reviews", table: "reviews" as const },
+      ] as const;
+
+      const results = await Promise.all([
+        ...tables.map(t => supabase.from(t.table).select("id", { count: "exact", head: true })),
         supabase.from("contact_submissions").select("id", { count: "exact", head: true }).eq("is_read", false),
-        supabase.from("services").select("id", { count: "exact", head: true }),
-        supabase.from("statistics").select("id", { count: "exact", head: true }),
-        supabase.from("blog_posts").select("id", { count: "exact", head: true }),
-        supabase.from("transformations").select("id", { count: "exact", head: true }),
-        supabase.from("reviews").select("id", { count: "exact", head: true }),
         supabase.from("reviews").select("id", { count: "exact", head: true }).eq("is_approved", false),
       ]);
-      return {
-        trainers: trainers.count ?? 0,
-        plans: plans.count ?? 0,
-        gallery: gallery.count ?? 0,
-        testimonials: testimonials.count ?? 0,
-        inquiries: inquiries.count ?? 0,
-        unread: unread.count ?? 0,
-        services: services.count ?? 0,
-        statistics: statistics.count ?? 0,
-        blogPosts: blogPosts.count ?? 0,
-        transformations: transformations.count ?? 0,
-        reviews: reviews.count ?? 0,
-        pendingReviews: pendingReviews.count ?? 0,
-      };
+
+      const counts: Record<string, number> = {};
+      tables.forEach((t, i) => { counts[t.key] = results[i].count ?? 0; });
+      counts.unread = results[tables.length].count ?? 0;
+      counts.pendingReviews = results[tables.length + 1].count ?? 0;
+      return counts;
     },
+    staleTime: 1000 * 60 * 2,
   });
 
   const cards = [
-    { title: "Services", value: stats?.services ?? 0, icon: Wrench },
-    { title: "Trainers", value: stats?.trainers ?? 0, icon: Users },
-    { title: "Plans", value: stats?.plans ?? 0, icon: CreditCard },
-    { title: "Gallery", value: stats?.gallery ?? 0, icon: Image },
-    { title: "Transformations", value: stats?.transformations ?? 0, icon: ArrowLeftRight },
-    { title: "Statistics", value: stats?.statistics ?? 0, icon: BarChart3 },
-    { title: "Pending Reviews", value: stats?.pendingReviews ?? 0, icon: ThumbsUp },
-    { title: "Testimonials", value: stats?.testimonials ?? 0, icon: Star },
-    { title: "Blog Posts", value: stats?.blogPosts ?? 0, icon: FileText },
-    { title: "Unread Inquiries", value: stats?.unread ?? 0, icon: MessageSquare },
+    { title: "Services", key: "services", icon: Wrench },
+    { title: "Trainers", key: "trainers", icon: Users },
+    { title: "Plans", key: "plans", icon: CreditCard },
+    { title: "Gallery", key: "gallery", icon: Image },
+    { title: "Transformations", key: "transformations", icon: ArrowLeftRight },
+    { title: "Pending Reviews", key: "pendingReviews", icon: ThumbsUp },
+    { title: "Testimonials", key: "testimonials", icon: Star },
+    { title: "Blog Posts", key: "blogPosts", icon: FileText },
+    { title: "Unread Inquiries", key: "unread", icon: MessageSquare },
   ];
 
   return (
@@ -62,7 +58,11 @@ const Dashboard = () => {
               <c.icon className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <p className="font-heading text-3xl text-foreground">{c.value}</p>
+              {isLoading ? (
+                <Skeleton className="h-9 w-16" />
+              ) : (
+                <p className="font-heading text-3xl text-foreground">{stats?.[c.key] ?? 0}</p>
+              )}
             </CardContent>
           </Card>
         ))}
