@@ -41,12 +41,6 @@ const queryClient = new QueryClient({
   },
 });
 
-const PageLoader = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center">
-    <div className="animate-pulse text-primary font-heading text-xl">Loading...</div>
-  </div>
-);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -54,35 +48,33 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <BrowserRouter>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Layout><Index /></Layout>} />
-              <Route path="/about" element={<Layout><About /></Layout>} />
-              <Route path="/services" element={<Layout><Services /></Layout>} />
-              <Route path="/trainers" element={<Layout><Trainers /></Layout>} />
-              <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
-              <Route path="/plans" element={<Layout><Plans /></Layout>} />
-              <Route path="/contact" element={<Layout><Contact /></Layout>} />
-              <Route path="/blog" element={<Layout><Blog /></Layout>} />
-              <Route path="/transformations" element={<Layout><Transformations /></Layout>} />
+          <Routes>
+            <Route path="/" element={<Layout><Index /></Layout>} />
+            <Route path="/about" element={<Layout><About /></Layout>} />
+            <Route path="/services" element={<Layout><Services /></Layout>} />
+            <Route path="/trainers" element={<Layout><Trainers /></Layout>} />
+            <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
+            <Route path="/plans" element={<Layout><Plans /></Layout>} />
+            <Route path="/contact" element={<Layout><Contact /></Layout>} />
+            <Route path="/blog" element={<Layout><Blog /></Layout>} />
+            <Route path="/transformations" element={<Layout><Transformations /></Layout>} />
 
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
-              <Route path="/admin/trainers" element={<AdminLayout><AdminTrainers /></AdminLayout>} />
-              <Route path="/admin/plans" element={<AdminLayout><AdminPlans /></AdminLayout>} />
-              <Route path="/admin/gallery" element={<AdminLayout><AdminGallery /></AdminLayout>} />
-              <Route path="/admin/testimonials" element={<AdminLayout><AdminTestimonials /></AdminLayout>} />
-              <Route path="/admin/inquiries" element={<AdminLayout><AdminInquiries /></AdminLayout>} />
-              <Route path="/admin/services" element={<AdminLayout><AdminServices /></AdminLayout>} />
-              <Route path="/admin/statistics" element={<AdminLayout><AdminStatistics /></AdminLayout>} />
-              <Route path="/admin/blog" element={<AdminLayout><AdminBlog /></AdminLayout>} />
-              <Route path="/admin/transformations" element={<AdminLayout><AdminTransformations /></AdminLayout>} />
-              <Route path="/admin/reviews" element={<AdminLayout><AdminReviews /></AdminLayout>} />
-              <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
+            <Route path="/admin/trainers" element={<AdminLayout><AdminTrainers /></AdminLayout>} />
+            <Route path="/admin/plans" element={<AdminLayout><AdminPlans /></AdminLayout>} />
+            <Route path="/admin/gallery" element={<AdminLayout><AdminGallery /></AdminLayout>} />
+            <Route path="/admin/testimonials" element={<AdminLayout><AdminTestimonials /></AdminLayout>} />
+            <Route path="/admin/inquiries" element={<AdminLayout><AdminInquiries /></AdminLayout>} />
+            <Route path="/admin/services" element={<AdminLayout><AdminServices /></AdminLayout>} />
+            <Route path="/admin/statistics" element={<AdminLayout><AdminStatistics /></AdminLayout>} />
+            <Route path="/admin/blog" element={<AdminLayout><AdminBlog /></AdminLayout>} />
+            <Route path="/admin/transformations" element={<AdminLayout><AdminTransformations /></AdminLayout>} />
+            <Route path="/admin/reviews" element={<AdminLayout><AdminReviews /></AdminLayout>} />
+            <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
 
-              <Route path="*" element={<Layout><NotFound /></Layout>} />
-            </Routes>
-          </Suspense>
+            <Route path="*" element={<Layout><NotFound /></Layout>} />
+          </Routes>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
