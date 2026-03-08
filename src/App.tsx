@@ -1,4 +1,3 @@
-import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,32 +7,28 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-
-// Lazy load all non-critical pages
-const About = lazy(() => import("./pages/About"));
-const Services = lazy(() => import("./pages/Services"));
-const Trainers = lazy(() => import("./pages/Trainers"));
-const Gallery = lazy(() => import("./pages/Gallery"));
-const Plans = lazy(() => import("./pages/Plans"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Blog = lazy(() => import("./pages/Blog"));
-const Transformations = lazy(() => import("./pages/Transformations"));
-
-// Lazy load all admin pages
-const AdminLogin = lazy(() => import("./pages/AdminLogin"));
-const AdminLayout = lazy(() => import("./components/AdminLayout"));
-const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
-const AdminTrainers = lazy(() => import("./pages/admin/AdminTrainers"));
-const AdminPlans = lazy(() => import("./pages/admin/AdminPlans"));
-const AdminGallery = lazy(() => import("./pages/admin/AdminGallery"));
-const AdminTestimonials = lazy(() => import("./pages/admin/AdminTestimonials"));
-const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
-const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
-const AdminStatistics = lazy(() => import("./pages/admin/AdminStatistics"));
-const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
-const AdminTransformations = lazy(() => import("./pages/admin/AdminTransformations"));
-const AdminReviews = lazy(() => import("./pages/admin/AdminReviews"));
-const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Trainers from "./pages/Trainers";
+import Gallery from "./pages/Gallery";
+import Plans from "./pages/Plans";
+import Contact from "./pages/Contact";
+import Blog from "./pages/Blog";
+import Transformations from "./pages/Transformations";
+import AdminLogin from "./pages/AdminLogin";
+import AdminLayout from "./components/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminTrainers from "./pages/admin/AdminTrainers";
+import AdminPlans from "./pages/admin/AdminPlans";
+import AdminGallery from "./pages/admin/AdminGallery";
+import AdminTestimonials from "./pages/admin/AdminTestimonials";
+import AdminInquiries from "./pages/admin/AdminInquiries";
+import AdminServices from "./pages/admin/AdminServices";
+import AdminStatistics from "./pages/admin/AdminStatistics";
+import AdminBlog from "./pages/admin/AdminBlog";
+import AdminTransformations from "./pages/admin/AdminTransformations";
+import AdminReviews from "./pages/admin/AdminReviews";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
